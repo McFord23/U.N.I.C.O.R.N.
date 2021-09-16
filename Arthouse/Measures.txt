@@ -13,7 +13,9 @@ Length
 Sporket D46 (R23 cm*) = 8 Chain (20)
 
 Bolts:
-14' - Crankcase, Cylinder, Sump
-11.5' - Flywheel, Flywheel Magnet's
-7' - Rod Cap, Crankshaft Cap, Magneto, Timing Cover
-6' (5.75) - Rod Bolt
+М14 - Crankcase, Cylinder, Sump
+М11.5 - Flywheel, Flywheel Magnet's
+M10 - Inet Inlet Maniflod, Hot Pipe
+М7 - Rod Cap, Crankshaft Cap, Magneto, Timing Cover
+М6 - Rod
+М4 - Cold Pipe
