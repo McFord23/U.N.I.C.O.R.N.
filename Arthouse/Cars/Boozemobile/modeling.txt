@@ -2,3 +2,5 @@ X Y Z
 
 Angle between Magnets on Flywheel - 0° 25.7° 0°
 Angle between Bolts on Magneto - 0° 36° 0°
+
+Distance Between Cylinders - 0 2.13 0

@@ -10,6 +10,9 @@ Length
 	Mare (AJ) = 1 + 3/4 h = 0.633 (0.65) m
 	Stallion (BM) = 0.68 m
 
+AJ.blend : Unity
+    1	 : 0.24
+
 Sporket D46 (R23 cm*) = 8 Chain (20)
 
 Bolts:
