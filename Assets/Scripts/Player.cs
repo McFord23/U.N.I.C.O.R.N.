@@ -4,29 +4,27 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float maxSpeed = 2f;
-    public float speed = 1000f;
-    public float gear = 2f;
+    public float speed = 1500f;
     Vector3 walkDir = Vector3.zero;
     
     Rigidbody rb;
 
-    public float sensitivity = 1f;
-    Vector3 viewDir = Vector3.zero;
     GameObject view;
-    Rigidbody rbView;
+    public float sensitivity = 100f;
+    Vector3 inputDir = Vector3.zero;
+    Vector3 viewDir = Vector3.zero;
+    public float smoothTime = 0.1f;
+    
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
         view = transform.Find("Main Camera").gameObject;
-        //rbView = view.GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        RotateView();
+        ViewRotation();
     }
 
     void FixedUpdate()
@@ -37,37 +35,36 @@ public class Player : MonoBehaviour
     void Walk()
     {
         walkDir = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
-        
-        if (rb.velocity.magnitude < maxSpeed) rb.AddRelativeForce(gear * walkDir * speed);
-        else rb.AddRelativeForce(walkDir * speed);
+        rb.AddRelativeForce(walkDir * speed * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
-    void RotateView()
+    void ViewRotation()
     {
-        viewDir += new Vector3(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
+        inputDir.x += Input.GetAxis("Mouse X") * Time.deltaTime * sensitivity;
+        inputDir.y -= Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivity;
 
-        //rbView.angularVelocity += viewDir.normalized * sensitivity;
-        
-        //rbView.AddRelativeTorque(viewDir * sensitivity);
+        Quaternion viewRotation = Quaternion.Euler(Mathf.Clamp(inputDir.y, -70, 80), inputDir.x, 0f);
+        Quaternion bodyRotation = Quaternion.Euler(0f, inputDir.x, 0f);
 
+        view.transform.rotation = Quaternion.Slerp(view.transform.rotation, viewRotation, smoothTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, bodyRotation, smoothTime);
 
-        if (view.transform.rotation.x > 85 && viewDir.x > 0)
+        /*currentRotationX = view.transform.rotation.x;
+        currentRotationY = transform.rotation.y;
+
+        var tmp = Mathf.Clamp(currentRotationY + inputDir.y * Time.deltaTime * sensitivity, -80, 70);
+        var rot = tmp - currentRotationY;
+        view.transform.Rotate(-rot, 0f, 0f);
+
+        transform.Rotate(0f, inputDir.x * Time.deltaTime * sensitivity, 0f);*/
+    }
+
+    void TakeObject()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            view.transform.rotation = Quaternion.Euler(viewDir.x * sensitivity, viewDir.y * sensitivity, 0f);
-            transform.rotation = Quaternion.Euler(0, viewDir.y * sensitivity, 0);
-        }
-        else if (view.transform.rotation.x < -85 && viewDir.x < 0)
-        {
-            view.transform.rotation = Quaternion.Euler(viewDir.x * sensitivity, viewDir.y * sensitivity, 0f);
-            transform.rotation = Quaternion.Euler(0, viewDir.y * sensitivity, 0);
-        }
-        else if (view.transform.rotation.x > -85 && view.transform.rotation.x < 85)
-        {
-            view.transform.rotation = Quaternion.Euler(viewDir.x * sensitivity, viewDir.y * sensitivity, 0f);
-            transform.rotation = Quaternion.Euler(0, viewDir.y * sensitivity, 0);
-        }
 
-        
+        }
     }
 
     void OnGUI()
